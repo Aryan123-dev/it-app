@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'GajananCableManager_Android_v1.9.zip'
+      - 'GajananCableManager_Android_v2.0.zip'
       - '.github/workflows/android.yml'
 
 permissions:
@@ -33,12 +33,12 @@ jobs:
       - name: Verify ZIP
         run: |
           ls -lh
-          test -f GajananCableManager_Android_v1.9.zip
+          test -f GajananCableManager_Android_v2.0.zip
 
       - name: Extract project
         run: |
           mkdir -p source
-          unzip -q GajananCableManager_Android_v1.9.zip -d source
+          unzip -q GajananCableManager_Android_v2.0.zip -d source
 
       - name: Verify project
         run: |
@@ -52,7 +52,7 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: GajananCableManager-APK-v1.9
+          name: GajananCableManager-APK-v2.0
           path: source/GajananCableManager/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 7
