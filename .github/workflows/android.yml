@@ -1,0 +1,44 @@
+name: Build Gajanan Cable Manager APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'GajananCableManager_Android_v1.2.zip'
+      - '.github/workflows/android.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle 8.9
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Extract Android project
+        run: unzip -q GajananCableManager_Android_v1.2.zip -d source
+
+      - name: Build debug APK
+        working-directory: source/GajananCableManager
+        run: gradle --no-daemon assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: GajananCableManager-debug-apk
+          path: source/GajananCableManager/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
