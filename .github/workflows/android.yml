@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'GajananCableManager_Android_v1.4.zip'
+      - 'GajananCableManager_Android_v1.6.zip'
       - '.github/workflows/android.yml'
 
 permissions:
@@ -30,25 +30,24 @@ jobs:
         with:
           gradle-version: '8.9'
 
-      - name: Check project ZIP
+      - name: Verify project ZIP
         run: |
           echo "Checking project ZIP..."
           ls -lh
-          test -f GajananCableManager_Android_v1.4.zip
+          test -f GajananCableManager_Android_v1.6.zip
 
       - name: Extract Android project
         run: |
           mkdir -p source
-          unzip -q GajananCableManager_Android_v1.4.zip -d source
+          unzip -q GajananCableManager_Android_v1.6.zip -d source
 
       - name: Verify project files
         run: |
-          echo "Checking Gradle files..."
-          ls -la source/GajananCableManager
           test -f source/GajananCableManager/app/build.gradle
           test -f source/GajananCableManager/settings.gradle
+          echo "Project files verified"
 
-      - name: Build APK
+      - name: Build Android APK
         working-directory: source/GajananCableManager
         run: |
           gradle --no-daemon clean assembleDebug
@@ -56,7 +55,7 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: GajananCableManager-APK
+          name: GajananCableManager-APK-v1.6
           path: source/GajananCableManager/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 7
